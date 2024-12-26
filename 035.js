@@ -20,9 +20,25 @@ function determineIsPrime(number) {
   }
   return true;
 }
-function getPermutations(numberArray) {}
+function getPermutations(n) {
+  const primesSet = new Set();
+  primesSet.add(n);
+
+  const primeStr = `${n}`;
+  for (let i = 1; i < primeStr.length; i++) {
+    const rotatedPrimeStr = primeStr.substring(i) + primeStr.substring(0, i);
+    const rotatedPrime = parseInt(rotatedPrimeStr);
+    if (!isPrime(rotatedPrime)) {
+      return [];
+    }
+    primesSet.add(rotatedPrime);
+  }
+
+  return Array.from(primesSet);
+}
+
 function isAllPermutationsPrime(number) {
-  const uniquePermutations = [];
+  const uniquePermutations = getPermutations(String(number));
   for (let i = 0; i < uniquePermutations.length; i++) {
     if (!isPrime(uniquePermutations[i])) {
       return [false];
@@ -42,7 +58,5 @@ function circularPrimes(n) {
       }
     }
   }
-  return Array.from(circularPrimesSet);
+  return circularPrimesSet.size;
 }
-
-console.log(circularPrimes(100000));

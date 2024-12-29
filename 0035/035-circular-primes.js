@@ -23,7 +23,6 @@ function determineIsPrime(number) {
 function getPermutations(n) {
   const primesSet = new Set();
   primesSet.add(n);
-
   const primeStr = `${n}`;
   for (let i = 1; i < primeStr.length; i++) {
     const rotatedPrimeStr = primeStr.substring(i) + primeStr.substring(0, i);
@@ -36,27 +35,22 @@ function getPermutations(n) {
 
   return Array.from(primesSet);
 }
-
-function isAllPermutationsPrime(number) {
-  const uniquePermutations = getPermutations(String(number));
-  for (let i = 0; i < uniquePermutations.length; i++) {
-    if (!isPrime(uniquePermutations[i])) {
-      return [false];
-    }
-  }
-  return [true, uniquePermutations];
-}
 function circularPrimes(n) {
   const circularPrimesSet = new Set();
   for (let i = 2; i < n; i++) {
-    if (isPrime(i)) {
-      if (!circularPrimesSet.has(i)) {
-        const booleanAndCirculations = isAllPermutationsPrime(i);
-        if (booleanAndCirculations[0]) {
-          circularPrimesSet.add(...booleanAndCirculations[1]);
-        }
+    if (!circularPrimesSet.has(i)) {
+      if (isPrime(i)) {
+        const rotations = getPermutations(i);
+        rotations.forEach((el) => {
+          if (el < n) {
+            circularPrimesSet.add(el);
+          }
+        });
       }
     }
   }
   return circularPrimesSet.size;
 }
+module.exports = {
+  circularPrimes,
+};

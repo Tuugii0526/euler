@@ -6,24 +6,25 @@ function pandigitalMultiples(k) {
   for (let i = 1; i < 10000; i++) {
     strDigits = "";
     currentMultiplyingNum = 1;
-    while (strDigits.length < 10) {
+    while (strDigits.length < k) {
       strDigits += String(currentMultiplyingNum * i);
       currentMultiplyingNum++;
     }
-    if (strDigits.length != 9) {
-      checkSet.clear();
-    } else {
+    if (strDigits.length == k) {
       const numDigits = strDigits.split("").map((s) => Number(s));
       numDigits.forEach((num) => {
         checkSet.add(num);
       });
-      if (checkSet.size == 9) {
-        possibleNums.push(Number(strDigits));
-        checkSet.clear();
+      if (checkSet.size == k) {
+        possibleNums.push(strDigits);
       }
     }
+    checkSet.clear();
   }
-  return true;
+  const notZeroIncludesNumbs = possibleNums
+    .filter((num) => !num.includes("0"))
+    .map((str) => Number(str));
+  return Math.max(...notZeroIncludesNumbs);
 }
 
-pandigitalMultiples(8);
+console.log("maxNum:", pandigitalMultiples(9));
